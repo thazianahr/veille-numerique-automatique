@@ -1,14 +1,11 @@
-# Atelier Pâtisserie
+# Thaziana's Cake Factory
 
-Un jeu de création de gâteaux cosy et pastel, dédié à la fabrication libre.
-
-## Jouer
-Ouvrez `index.html` dans un navigateur moderne ou servez le dossier avec un petit serveur web.
+Atelier de création de gâteaux pastel avec génoises épaisses, rendu visuel réaliste et observation rotative 360°.
 
 ## Interactions
-- Choisir une forme, un parfum et de 1 à 4 couches
-- Choisir la crème et l'étaler à la souris ou au doigt
-- Changer le glaçage
-- Sélectionner des décorations puis cliquer sur le gâteau pour les poser
-- Faire glisser les décorations pour les déplacer et les redimensionner avec le curseur
-- Outils de crème, glaçage, gomme, annuler, recommencer et inspiration aléatoire
+- Plusieurs formes et 1 à 4 étages épais
+- Génoises, couches de garniture et glaçage distinctes
+- Crème et glaçage appliqués à la souris ou au doigt
+- Toppings illustrés, posés depuis un tube virtuel
+- Déplacement et redimensionnement des décorations
+- Rotation complète du gâteau par glisser-déposer horizontal
