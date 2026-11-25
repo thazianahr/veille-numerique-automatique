@@ -1,11 +1,13 @@
 # Thaziana's Cake Factory
 
-Atelier de création de gâteaux pastel avec génoises épaisses, rendu visuel réaliste et observation rotative 360°.
+Atelier de création de gâteaux avec couches épaisses, décoration illustrée et rotation 360°.
 
-## Interactions
-- Plusieurs formes et 1 à 4 étages épais
-- Génoises, couches de garniture et glaçage distinctes
+## Jouer
+Ouvrez `index.html` ou utilisez GitHub Pages.
+
+- Étages épais avec génoise et garniture visibles
+- Formes ronde, carrée et cœur
 - Crème et glaçage appliqués à la souris ou au doigt
-- Toppings illustrés, posés depuis un tube virtuel
-- Déplacement et redimensionnement des décorations
-- Rotation complète du gâteau par glisser-déposer horizontal
+- Toppings illustrés en SVG
+- Déplacement et redimensionnement libre
+- Rotation du gâteau en faisant glisser horizontalement
