@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101a2d">
+  <title>Veille numérique — Horloge &amp; minuteur</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0b1220;
+      color: #eef4ff;
+      font-synthesis: none;
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 32px 18px;
+      background: radial-gradient(ellipse at 50% 0%, #1b3150 0%, #0b1220 62%);
+    }
+    main { width: min(100%, 960px); }
+    header { text-align: center; margin-bottom: 30px; }
+    .eyebrow { color: #8db9ff; font-size: .78rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+    h1 { margin: 10px 0 8px; font-size: clamp(2rem, 6vw, 3.2rem); letter-spacing: -.045em; }
+    .subtitle { margin: 0; color: #aab8cf; }
+    .panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .panel {
+      padding: clamp(22px, 4vw, 34px);
+      border: 1px solid #293953;
+      border-radius: 22px;
+      background: rgb(17 28 46 / 88%);
+      box-shadow: 0 18px 55px rgb(0 0 0 / 22%);
+    }
+    h2 { margin: 0 0 24px; color: #c9d8ef; font-size: .9rem; letter-spacing: .12em; text-transform: uppercase; }
+    .clock-face {
+      position: relative; width: min(100%, 240px); aspect-ratio: 1; margin: 0 auto 22px;
+      border: 7px solid #293e5d; border-radius: 50%;
+      background: radial-gradient(circle, #16243a 0 5px, transparent 6px), #101b2d;
+      box-shadow: inset 0 0 30px rgb(0 0 0 / 25%), 0 0 25px rgb(77 147 255 / 8%);
+    }
+    .tick { position: absolute; left: 50%; top: 8px; width: 2px; height: 10px; background: #91a6c5; transform-origin: 50% 105px; }
+    .tick.major { width: 3px; height: 15px; background: #d7e5fb; }
+    .hand { position: absolute; left: 50%; bottom: 50%; border-radius: 9px; transform-origin: 50% 100%; }
+    .hand.hour { width: 6px; height: 59px; background: #e9f1ff; }
+    .hand.minute { width: 4px; height: 82px; background: #7fb0ff; }
+    .hand.second { width: 2px; height: 91px; background: #ff8f87; }
+    .hub { position: absolute; width: 12px; height: 12px; left: 50%; top: 50%; border-radius: 50%; background: #fff; transform: translate(-50%, -50%); }
+    .digital { text-align: center; font-variant-numeric: tabular-nums; font-size: clamp(2rem, 7vw, 2.8rem); font-weight: 650; letter-spacing: .04em; }
+    .date { margin-top: 6px; color: #9eafc9; text-align: center; text-transform: capitalize; }
+    .timer-display { padding: 30px 0 22px; text-align: center; font-size: clamp(3rem, 10vw, 4.5rem); font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: .035em; }
+    .timer-form { display: flex; justify-content: center; align-items: end; gap: 12px; margin-bottom: 20px; }
+    label { display: grid; gap: 7px; color: #aab8cf; font-size: .85rem; }
+    input {
+      width: 92px; padding: 11px 12px; border: 1px solid #3a4d69; border-radius: 10px;
+      background: #0b1423; color: #f3f7ff; font: inherit; font-variant-numeric: tabular-nums;
+    }
+    .buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+    button, .code-link {
+      display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 0 17px;
+      border: 1px solid #405675; border-radius: 10px; background: #1a2b44; color: #f3f7ff;
+      font: inherit; font-weight: 650; text-decoration: none; cursor: pointer;
+    }
+    button.primary { border-color: #6ea5ff; background: #3978d6; }
+    button:hover, .code-link:hover { filter: brightness(1.15); }
+    button:focus-visible, input:focus-visible, .code-link:focus-visible { outline: 3px solid #9cc4ff; outline-offset: 3px; }
+    .status { min-height: 24px; margin: 17px 0 0; color: #ffb7af; text-align: center; }
+    footer { margin-top: 22px; text-align: center; }
+    .code-link { min-height: 38px; padding: 0 14px; color: #bcd4f8; font-size: .9rem; }
+    @media (max-width: 700px) { .panels { grid-template-columns: 1fr; } .clock-face { width: 210px; } .tick { transform-origin: 50% 91px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">Tableau de bord</div>
+      <h1>Veille numérique</h1>
+      <p class="subtitle">L’heure et votre prochain rendez-vous, en un coup d’œil.</p>
+    </header>
+    <div class="panels">
+      <section class="panel" aria-labelledby="clock-title">
+        <h2 id="clock-title">Horloge locale</h2>
+        <div class="clock-face" role="img" aria-label="Horloge analogique">
+          <div id="ticks" aria-hidden="true"></div>
+          <div class="hand hour" id="hour-hand"></div>
+          <div class="hand minute" id="minute-hand"></div>
+          <div class="hand second" id="second-hand"></div>
+          <div class="hub"></div>
+        </div>
+        <div class="digital" id="clock-time" aria-live="off">--:--:--</div>
+        <div class="date" id="clock-date"></div>
+      </section>
+      <section class="panel" aria-labelledby="timer-title">
+        <h2 id="timer-title">Minuteur</h2>
+        <div class="timer-display" id="timer-display" role="timer" aria-live="off">05:00</div>
+        <div class="timer-form" aria-label="Durée du minuteur">
+          <label for="minutes">Minutes
+            <input id="minutes" type="number" min="0" max="999" value="5" inputmode="numeric">
+          </label>
+          <label for="seconds">Secondes
+            <input id="seconds" type="number" min="0" max="59" value="0" inputmode="numeric">
+          </label>
+        </div>
+        <div class="buttons">
+          <button class="primary" id="start-button" type="button">Démarrer</button>
+          <button id="pause-button" type="button" disabled>Pause</button>
+          <button id="reset-button" type="button">Réinitialiser</button>
+        </div>
+        <p class="status" id="timer-status" role="status" aria-live="polite"></p>
+      </section>
+    </div>
+    <footer><a class="code-link" href="code.html">Voir le code de cette page →</a></footer>
+  </main>
+  <script>
+    // Repères de l'horloge analogique
+    const ticks = document.querySelector('#ticks');
+    for (let i = 0; i < 12; i += 1) {
+      const tick = document.createElement('span');
+      tick.className = `tick${i % 3 === 0 ? ' major' : ''}`;
+      tick.style.transform = `translateX(-50%) rotate(${i * 30}deg)`;
+      ticks.append(tick);
+    }
+
+    const twoDigits = (value) => String(value).padStart(2, '0');
+    function updateClock() {
+      const now = new Date();
+      const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+      const minutes = now.getMinutes() + seconds / 60;
+      const hours = (now.getHours() % 12) + minutes / 60;
+      document.querySelector('#second-hand').style.transform = `translateX(-50%) rotate(${seconds * 6}deg)`;
+      document.querySelector('#minute-hand').style.transform = `translateX(-50%) rotate(${minutes * 6}deg)`;
+      document.querySelector('#hour-hand').style.transform = `translateX(-50%) rotate(${hours * 30}deg)`;
+      document.querySelector('#clock-time').textContent = now.toLocaleTimeString('fr-FR');
+      document.querySelector('#clock-date').textContent = new Intl.DateTimeFormat('fr-FR', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      }).format(now);
+    }
+    updateClock();
+    setInterval(updateClock, 250);
+
+    const minutesInput = document.querySelector('#minutes');
+    const secondsInput = document.querySelector('#seconds');
+    const display = document.querySelector('#timer-display');
+    const status = document.querySelector('#timer-status');
+    const startButton = document.querySelector('#start-button');
+    const pauseButton = document.querySelector('#pause-button');
+    let remaining = 300;
+    let deadline = 0;
+    let intervalId = null;
+
+    function formatTime(totalSeconds) {
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+      return `${twoDigits(mins)}:${twoDigits(secs)}`;
+    }
+    function selectedDuration() {
+      const mins = Math.max(0, Math.min(999, Number.parseInt(minutesInput.value, 10) || 0));
+      const secs = Math.max(0, Math.min(59, Number.parseInt(secondsInput.value, 10) || 0));
+      minutesInput.value = String(mins);
+      secondsInput.value = String(secs);
+      return mins * 60 + secs;
+    }
+    function renderTimer() { display.textContent = formatTime(remaining); }
+    function stopTimer() {
+      window.clearInterval(intervalId);
+      intervalId = null;
+    }
+    function tick() {
+      remaining = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+      renderTimer();
+      if (remaining === 0) {
+        stopTimer();
+        startButton.disabled = false;
+        pauseButton.disabled = true;
+        status.textContent = 'Temps écoulé !';
+      }
+    }
+    startButton.addEventListener('click', () => {
+      if (intervalId) return;
+      if (remaining <= 0) remaining = selectedDuration();
+      if (remaining <= 0) {
+        status.textContent = 'Choisissez une durée supérieure à zéro.';
+        return;
+      }
+      status.textContent = '';
+      deadline = Date.now() + remaining * 1000;
+      startButton.disabled = true;
+      pauseButton.disabled = false;
+      tick();
+      intervalId = window.setInterval(tick, 200);
+    });
+    pauseButton.addEventListener('click', () => {
+      if (!intervalId) return;
+      tick();
+      stopTimer();
+      startButton.disabled = false;
+      pauseButton.disabled = true;
+      status.textContent = 'Minuteur en pause.';
+    });
+    document.querySelector('#reset-button').addEventListener('click', () => {
+      stopTimer();
+      remaining = selectedDuration();
+      renderTimer();
+      startButton.disabled = false;
+      pauseButton.disabled = true;
+      status.textContent = '';
+    });
+    for (const input of [minutesInput, secondsInput]) {
+      input.addEventListener('input', () => {
+        if (intervalId) return;
+        remaining = selectedDuration();
+        renderTimer();
+        status.textContent = '';
+      });
+    }
+    renderTimer();
+  </script>
+</body>
+</html>
