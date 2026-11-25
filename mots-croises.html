@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101a2d">
+  <title>Mots croisés — Veille numérique</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #0b1220; color: #eef4ff; }
+    * { box-sizing: border-box; }
+    body { min-height: 100vh; margin: 0; padding: 30px 18px; background: radial-gradient(ellipse at 50% 0%, #1b3150 0%, #0b1220 62%); }
+    main { width: min(100%, 980px); margin: 0 auto; }
+    header { text-align: center; margin-bottom: 26px; }
+    .eyebrow { color: #8db9ff; font-size: .78rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+    h1 { margin: 9px 0; font-size: clamp(2rem, 6vw, 3.1rem); letter-spacing: -.045em; }
+    header p { color: #aab8cf; margin: 0; }
+    .layout { display: grid; grid-template-columns: minmax(280px, 1fr) minmax(280px, 1fr); gap: 18px; align-items: start; }
+    .panel { padding: clamp(20px, 4vw, 30px); border: 1px solid #293953; border-radius: 20px; background: rgb(17 28 46 / 90%); box-shadow: 0 18px 55px rgb(0 0 0 / 22%); }
+    h2 { margin: 0 0 18px; color: #c9d8ef; font-size: .9rem; letter-spacing: .12em; text-transform: uppercase; }
+    .board-wrap { display: grid; place-items: center; }
+    .board { display: grid; grid-template-columns: repeat(5, min(15vw, 58px)); grid-template-rows: repeat(5, min(15vw, 58px)); gap: 3px; padding: 5px; background: #293953; border-radius: 10px; }
+    .cell { position: relative; display: grid; place-items: center; background: #f0f5ff; color: #142239; border: 2px solid transparent; border-radius: 4px; }
+    .cell.block { background: #101827; }
+    .cell.active-word { background: #c5dcff; }
+    .cell.selected { border-color: #ffbc68; background: #fff0d6; }
+    .cell input { width: 100%; height: 100%; padding: 10px 0 0; border: 0; outline: 0; background: transparent; color: #142239; text-align: center; text-transform: uppercase; font: 700 clamp(1.25rem, 5vw, 1.8rem)/1 ui-sans-serif, system-ui, sans-serif; caret-color: #286bc4; }
+    .number { position: absolute; top: 2px; left: 4px; z-index: 1; pointer-events: none; color: #425572; font-size: .62rem; font-weight: 700; }
+    .clues { display: grid; gap: 20px; }
+    .clue-group h3 { margin: 0 0 10px; color: #8db9ff; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; }
+    .clue { display: flex; width: 100%; gap: 10px; padding: 9px 10px; border: 1px solid transparent; border-radius: 9px; background: transparent; color: #d7e5fb; text-align: left; font: inherit; cursor: pointer; }
+    .clue:hover, .clue.active { border-color: #405675; background: #1a2b44; }
+    .clue strong { min-width: 20px; color: #a9caff; }
+    .controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
+    button.action { min-height: 42px; padding: 0 16px; border: 1px solid #405675; border-radius: 10px; background: #1a2b44; color: #f3f7ff; font: inherit; font-weight: 650; cursor: pointer; }
+    button.action.primary { border-color: #6ea5ff; background: #3978d6; }
+    button.action:hover { filter: brightness(1.15); }
+    button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid #9cc4ff; outline-offset: 3px; }
+    .message { min-height: 26px; margin: 14px 0 0; color: #b7c8df; text-align: center; }
+    .message.success { color: #86e0b0; }
+    .message.error { color: #ffb7af; }
+    footer { margin-top: 22px; text-align: center; }
+    footer a { color: #bcd4f8; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 720px) { .layout { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">Pause ludique</div>
+      <h1>Mots croisés</h1>
+      <p>Un mini-grille en français — choisissez un indice et remplissez les cases.</p>
+    </header>
+    <div class="layout">
+      <section class="panel" aria-labelledby="grid-title">
+        <h2 id="grid-title">La grille</h2>
+        <div class="board-wrap"><div class="board" id="board" role="group" aria-label="Grille de mots croisés"></div></div>
+        <div class="controls">
+          <button class="action primary" id="check" type="button">Vérifier</button>
+          <button class="action" id="reveal" type="button">Révéler une lettre</button>
+          <button class="action" id="reset" type="button">Recommencer</button>
+        </div>
+        <p class="message" id="message" role="status" aria-live="polite">Cliquez sur un indice pour commencer.</p>
+      </section>
+      <section class="panel clues" aria-labelledby="clues-title">
+        <div>
+          <h2 id="clues-title">Les indices</h2>
+          <div class="clue-group">
+            <h3>Horizontalement</h3>
+            <button class="clue" data-word="sol"><strong>1.</strong><span>Notre étoile, qui éclaire la journée.</span></button>
+            <button class="clue" data-word="ami"><strong>3.</strong><span>Personne qui nous est chère.</span></button>
+            <button class="clue" data-word="cap"><strong>4.</strong><span>Direction à prendre, ou couvre-chef.</span></button>
+            <button class="clue" data-word="ile"><strong>5.</strong><span>Terre entourée d’eau.</span></button>
+            <button class="clue" data-word="zen"><strong>6.</strong><span>Calme et détendu.</span></button>
+          </div>
+          <div class="clue-group" style="margin-top:20px">
+            <h3>Verticalement</h3>
+            <button class="clue" data-word="lapin"><strong>2.</strong><span>Petit animal aux longues oreilles.</span></button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <footer><a href="code-mots-croises.html">Voir le code source de cette page →</a></footer>
+  </main>
+  <script>
+    // Les réponses sont placées dans une grille de 5 x 5. Les dièses sont des cases noires.
+    const layout = [
+      ['s', 'o', 'l', '#', '#'],
+      ['#', '#', 'a', 'm', 'i'],
+      ['c', 'a', 'p', '#', '#'],
+      ['#', '#', 'i', 'l', 'e'],
+      ['z', 'e', 'n', '#', '#']
+    ];
+    const words = {
+      sol: { answer: 'SOL', cells: [[0,0],[0,1],[0,2]], direction: 'across' },
+      ami: { answer: 'AMI', cells: [[1,2],[1,3],[1,4]], direction: 'across' },
+      cap: { answer: 'CAP', cells: [[2,0],[2,1],[2,2]], direction: 'across' },
+      ile: { answer: 'ILE', cells: [[3,2],[3,3],[3,4]], direction: 'across' },
+      zen: { answer: 'ZEN', cells: [[4,0],[4,1],[4,2]], direction: 'across' },
+      lapin: { answer: 'LAPIN', cells: [[0,2],[1,2],[2,2],[3,2],[4,2]], direction: 'down' }
+    };
+    const numbering = { '0,0': 1, '0,2': 2, '1,2': 3, '2,0': 4, '3,2': 5, '4,0': 6 };
+    const board = document.querySelector('#board');
+    const message = document.querySelector('#message');
+    let activeWord = 'sol';
+    let activeIndex = 0;
+    const inputs = new Map();
+
+    layout.forEach((row, r) => row.forEach((letter, c) => {
+      const cell = document.createElement('div');
+      cell.className = `cell${letter === '#' ? ' block' : ''}`;
+      if (letter !== '#') {
+        const number = numbering[`${r},${c}`];
+        if (number) {
+          const label = document.createElement('span');
+          label.className = 'number';
+          label.textContent = number;
+          cell.append(label);
+        }
+        const input = document.createElement('input');
+        input.maxLength = 1;
+        input.autocomplete = 'off';
+        input.autocapitalize = 'characters';
+        input.spellcheck = false;
+        input.setAttribute('aria-label', `Ligne ${r + 1}, colonne ${c + 1}`);
+        input.dataset.row = r;
+        input.dataset.col = c;
+        cell.append(input);
+        inputs.set(`${r},${c}`, input);
+        input.addEventListener('focus', () => {
+          const match = Object.entries(words).find(([, word]) => word.cells.some(([wr, wc]) => wr === r && wc === c));
+          if (match) selectWord(match[0], match[1].cells.findIndex(([wr, wc]) => wr === r && wc === c), false);
+        });
+        input.addEventListener('input', () => {
+          input.value = input.value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').slice(-1).toUpperCase().replace(/[^A-Z]/g, '');
+          if (input.value) move(1);
+          message.textContent = '';
+          message.className = 'message';
+        });
+        input.addEventListener('keydown', (event) => {
+          if (event.key === 'Backspace' && !input.value) { event.preventDefault(); move(-1); }
+          if (event.key === 'ArrowRight' || event.key === 'ArrowDown') { event.preventDefault(); move(1); }
+          if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') { event.preventDefault(); move(-1); }
+        });
+      }
+      board.append(cell);
+    }));
+
+    function updateHighlight() {
+      document.querySelectorAll('.cell').forEach(cell => cell.classList.remove('active-word', 'selected'));
+      document.querySelectorAll('.clue').forEach(clue => clue.classList.toggle('active', clue.dataset.word === activeWord));
+      const word = words[activeWord];
+      word.cells.forEach(([r,c], i) => {
+        const input = inputs.get(`${r},${c}`);
+        input.parentElement.classList.add('active-word');
+        if (i === activeIndex) input.parentElement.classList.add('selected');
+      });
+    }
+    function selectWord(id, index = 0, focus = true) {
+      activeWord = id;
+      activeIndex = Math.max(0, Math.min(index, words[id].cells.length - 1));
+      updateHighlight();
+      if (focus) {
+        const [r,c] = words[id].cells[activeIndex];
+        inputs.get(`${r},${c}`).focus();
+      }
+    }
+    function move(step) {
+      const cells = words[activeWord].cells;
+      activeIndex = Math.max(0, Math.min(cells.length - 1, activeIndex + step));
+      updateHighlight();
+      const [r,c] = cells[activeIndex];
+      inputs.get(`${r},${c}`).focus();
+    }
+    document.querySelectorAll('.clue').forEach(clue => clue.addEventListener('click', () => selectWord(clue.dataset.word)));
+    document.querySelector('#check').addEventListener('click', () => {
+      let complete = true;
+      let correct = true;
+      for (const word of Object.values(words)) {
+        const guess = word.cells.map(([r,c]) => inputs.get(`${r},${c}`).value).join('');
+        if (guess.length < word.answer.length) complete = false;
+        if (guess && guess !== word.answer) correct = false;
+      }
+      if (complete && correct) {
+        message.textContent = 'Bravo, la grille est entièrement correcte !';
+        message.className = 'message success';
+      } else if (complete) {
+        message.textContent = 'Il y a encore une erreur. Les cases jaunes indiquent la réponse sélectionnée.';
+        message.className = 'message error';
+      } else {
+        message.textContent = 'Continuez : certaines cases sont encore vides.';
+        message.className = 'message';
+      }
+    });
+    document.querySelector('#reveal').addEventListener('click', () => {
+      const [r,c] = words[activeWord].cells[activeIndex];
+      inputs.get(`${r},${c}`).value = words[activeWord].answer[activeIndex];
+      message.textContent = 'Une lettre révélée. À vous de continuer !';
+      message.className = 'message';
+      move(1);
+    });
+    document.querySelector('#reset').addEventListener('click', () => {
+      inputs.forEach(input => { input.value = ''; });
+      message.textContent = 'Grille réinitialisée. À vous de jouer !';
+      message.className = 'message';
+      selectWord('sol');
+    });
+    selectWord('sol', 0, false);
+  </script>
+</body>
+</html>
