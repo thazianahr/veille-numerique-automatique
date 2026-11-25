@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#301547">
+  <title>Palais des gâteaux — Atelier de création</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #170c24;
+      color: #fff7ff;
+      --pink: #ff9dcc;
+      --lavender: #c9a7ff;
+      --panel: #291637;
+    }
+    * { box-sizing: border-box; }
+    body { min-height: 100vh; margin: 0; padding: 28px 18px 38px; background: radial-gradient(ellipse at 50% -10%, #613276 0, #281338 42%, #170c24 78%); }
+    main { width: min(1120px, 100%); margin: auto; }
+    header { text-align: center; margin: 0 auto 25px; }
+    .eyebrow { color: #ffd2e8; font-size: .76rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; }
+    h1 { margin: 8px 0; font-family: Georgia, serif; font-size: clamp(2.2rem, 6vw, 3.8rem); letter-spacing: -.04em; }
+    header p { margin: 0; color: #e2cde9; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(300px, .9fr); gap: 18px; align-items: start; }
+    .panel { border: 1px solid #704b7e; border-radius: 22px; background: rgb(41 22 55 / 94%); box-shadow: 0 20px 55px #0b051866; }
+    .preview-panel { padding: clamp(18px, 3vw, 28px); }
+    .controls-panel { padding: clamp(20px, 3vw, 30px); }
+    h2 { margin: 0 0 18px; color: #ffe4f2; font-family: Georgia, serif; font-size: 1.35rem; }
+    .scene { position: relative; display: grid; place-items: end center; min-height: 390px; overflow: hidden; border: 1px solid #80598c; border-radius: 18px; background: radial-gradient(ellipse at 50% 70%, #613c77 0, #3a2150 40%, #261333 100%); }
+    .scene::before { content: "✦     ·        ✧       ·     ✦"; position: absolute; top: 24px; color: #ffd9ed; letter-spacing: 1.25rem; opacity: .8; }
+    .cake-area { position: relative; z-index: 1; display: flex; flex-direction: column-reverse; align-items: center; justify-content: flex-start; width: 100%; padding: 25px 10px 49px; }
+    .plate { position: relative; z-index: 3; width: min(87%, 430px); height: 23px; margin-top: -1px; border: 3px solid #ffe6f4; border-radius: 50%; background: linear-gradient(#fff7fe, #d7b6e0); box-shadow: 0 10px 20px #16091c99; }
+    .tier { position: relative; height: 76px; margin-bottom: -2px; border: 3px solid #fff0ef; border-bottom-width: 6px; background: var(--frosting, #f3a5c9); box-shadow: inset 0 -12px 0 #00000012, inset 0 12px 0 #ffffff35, 0 7px 10px #16091c44; transition: width .25s, height .25s, background .2s; }
+    .tier.round { border-radius: 22px 22px 12px 12px; }
+    .tier.square { border-radius: 8px; }
+    .tier.heart { clip-path: polygon(50% 100%, 5% 48%, 4% 28%, 14% 10%, 31% 7%, 50% 26%, 69% 7%, 86% 10%, 96% 28%, 95% 48%); border: 0; outline: 3px solid #fff0ef; }
+    .tier.heart::after { content: ""; position: absolute; inset: 3px; border: 3px solid #fff0ef; clip-path: polygon(50% 100%, 5% 48%, 4% 28%, 14% 10%, 31% 7%, 50% 26%, 69% 7%, 86% 10%, 96% 28%, 95% 48%); }
+    .drip { position: absolute; z-index: 2; top: -3px; left: 0; width: 100%; height: 21px; border-radius: 50% 50% 40% 40%; background: var(--drip, #ffe2f2); box-shadow: 0 5px 0 var(--drip, #ffe2f2); }
+    .drip::before, .drip::after { content: ""; position: absolute; top: 10px; width: 13px; height: 22px; background: var(--drip, #ffe2f2); border-radius: 0 0 9px 9px; }
+    .drip::before { left: 22%; height: 17px; }
+    .drip::after { right: 24%; height: 23px; }
+    .cake-topper { position: absolute; z-index: 5; top: -34px; left: 50%; color: #fff4bd; font-size: 2rem; transform: translateX(-50%); filter: drop-shadow(0 2px 2px #321344); }
+    .sprinkle { position: absolute; z-index: 4; width: 8px; height: 4px; border-radius: 4px; background: #fff4a8; transform: rotate(30deg); pointer-events: none; }
+    .sprinkle:nth-of-type(3n) { background: #9ff4e3; transform: rotate(-35deg); }
+    .sprinkle:nth-of-type(4n) { background: #ad9aff; }
+    .topping { position: absolute; z-index: 5; font-size: 1.35rem; line-height: 1; filter: drop-shadow(0 2px 1px #32134455); pointer-events: none; }
+    .scene-label { position: absolute; bottom: 12px; z-index: 4; color: #f0d7f0; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; }
+    .control-group { margin: 0 0 19px; padding: 0; border: 0; }
+    .control-group legend, .control-title { margin-bottom: 9px; color: #efd9f3; font-size: .86rem; font-weight: 700; }
+    .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+    .choice { position: relative; }
+    .choice input { position: absolute; opacity: 0; pointer-events: none; }
+    .choice label, .topping-button { display: inline-flex; min-height: 39px; align-items: center; justify-content: center; gap: 7px; padding: 0 12px; border: 1px solid #79578a; border-radius: 10px; background: #3a234a; color: #fff6ff; font: inherit; font-size: .9rem; cursor: pointer; }
+    .choice input:checked + label { border-color: #ffacd1; background: #663b71; box-shadow: 0 0 0 2px #ffacd144; }
+    .choice input:focus-visible + label, button:focus-visible, a:focus-visible { outline: 3px solid #ffd1e7; outline-offset: 3px; }
+    .swatch { width: 15px; height: 15px; border: 1px solid #ffffff99; border-radius: 50%; }
+    .topping-button { min-width: 70px; flex-direction: column; min-height: 56px; padding: 5px 10px; font-size: .78rem; }
+    .topping-button span { font-size: 1.35rem; }
+    .topping-button[aria-pressed="true"] { border-color: #ffacd1; background: #663b71; }
+    select { min-height: 40px; padding: 0 12px; border: 1px solid #79578a; border-radius: 10px; background: #3a234a; color: #fff6ff; font: inherit; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 23px; }
+    button.action { min-height: 43px; padding: 0 15px; border: 1px solid #b474a1; border-radius: 10px; background: #492c5b; color: #fff7ff; font: inherit; font-weight: 700; cursor: pointer; }
+    button.action.primary { border-color: #ffb4d7; background: linear-gradient(135deg, #c44f96, #8454c5); }
+    button.action:hover, .topping-button:hover { filter: brightness(1.13); }
+    .status { min-height: 24px; margin: 14px 0 0; color: #ffd4e9; }
+    footer { margin-top: 22px; text-align: center; }
+    footer a { color: #f1d3ff; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } .scene { min-height: 330px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">Atelier royal de pâtisserie</div>
+      <h1>Palais des gâteaux</h1>
+      <p>Choisissez votre gâteau, ajoutez des étages et décorez-le à votre goût !</p>
+    </header>
+    <div class="layout">
+      <section class="panel preview-panel" aria-labelledby="preview-title">
+        <h2 id="preview-title">Votre création</h2>
+        <div class="scene" aria-label="Aperçu de votre gâteau décoré">
+          <div class="cake-area" id="cake" aria-live="polite"></div>
+          <div class="scene-label" id="summary">Gâteau rond · 2 étages</div>
+        </div>
+      </section>
+      <section class="panel controls-panel" aria-labelledby="design-title">
+        <h2 id="design-title">Personnalisez votre gâteau</h2>
+        <fieldset class="control-group">
+          <legend>1. Choisissez la forme</legend>
+          <div class="choices">
+            <div class="choice"><input type="radio" name="shape" id="round" value="round" checked><label for="round">◯ Ronde</label></div>
+            <div class="choice"><input type="radio" name="shape" id="square" value="square"><label for="square">▢ Carrée</label></div>
+            <div class="choice"><input type="radio" name="shape" id="heart" value="heart"><label for="heart">♡ Cœur</label></div>
+          </div>
+        </fieldset>
+        <fieldset class="control-group">
+          <legend>2. Nombre d’étages</legend>
+          <div class="choices">
+            <label class="control-title" for="tiers" style="position:absolute;clip:rect(0,0,0,0)">Nombre d'étages</label>
+            <select id="tiers" aria-label="Nombre d'étages">
+              <option value="1">1 étage</option><option value="2" selected>2 étages</option><option value="3">3 étages</option>
+            </select>
+          </div>
+        </fieldset>
+        <fieldset class="control-group">
+          <legend>3. Couleur du glaçage</legend>
+          <div class="choices">
+            <div class="choice"><input type="radio" name="frosting" id="pink" value="#f3a5c9" checked><label for="pink"><i class="swatch" style="background:#f3a5c9"></i>Fraise</label></div>
+            <div class="choice"><input type="radio" name="frosting" id="lavender" value="#c7a6ee"><label for="lavender"><i class="swatch" style="background:#c7a6ee"></i>Violette</label></div>
+            <div class="choice"><input type="radio" name="frosting" id="mint" value="#91d8c6"><label for="mint"><i class="swatch" style="background:#91d8c6"></i>Menthe</label></div>
+            <div class="choice"><input type="radio" name="frosting" id="vanilla" value="#f1d99c"><label for="vanilla"><i class="swatch" style="background:#f1d99c"></i>Vanille</label></div>
+          </div>
+        </fieldset>
+        <fieldset class="control-group">
+          <legend>4. Ajoutez vos toppings <span style="font-weight:400">(plusieurs choix possibles)</span></legend>
+          <div class="choices" id="topping-options">
+            <button type="button" class="topping-button" data-topping="🍓" aria-pressed="false"><span>🍓</span>Fraises</button>
+            <button type="button" class="topping-button" data-topping="🍒" aria-pressed="false"><span>🍒</span>Cerises</button>
+            <button type="button" class="topping-button" data-topping="🫐" aria-pressed="false"><span>🫐</span>Myrtilles</button>
+            <button type="button" class="topping-button" data-topping="🍫" aria-pressed="false"><span>🍫</span>Chocolat</button>
+            <button type="button" class="topping-button" data-topping="🌸" aria-pressed="false"><span>🌸</span>Fleurs</button>
+            <button type="button" class="topping-button" data-topping="🕯️" aria-pressed="false"><span>🕯️</span>Bougie</button>
+          </div>
+        </fieldset>
+        <fieldset class="control-group">
+          <legend>5. Nappage</legend>
+          <div class="choices">
+            <div class="choice"><input type="radio" name="drip" id="white" value="#ffe2f2" checked><label for="white">Crème</label></div>
+            <div class="choice"><input type="radio" name="drip" id="chocolate" value="#8c573f"><label for="chocolate">Chocolat</label></div>
+            <div class="choice"><input type="radio" name="drip" id="caramel" value="#e4a34c"><label for="caramel">Caramel</label></div>
+          </div>
+        </fieldset>
+        <div class="actions">
+          <button class="action primary" id="sprinkles" type="button">✨ Ajouter des paillettes</button>
+          <button class="action" id="clear" type="button">Recommencer</button>
+        </div>
+        <p class="status" id="status" role="status" aria-live="polite">À vous de jouer, pâtissier·ère !</p>
+      </section>
+    </div>
+    <footer><a href="code-gateaux.html">Voir le code source du jeu →</a></footer>
+  </main>
+  <script>
+    const cake = document.querySelector('#cake');
+    const summary = document.querySelector('#summary');
+    const status = document.querySelector('#status');
+    const toppingButtons = [...document.querySelectorAll('.topping-button')];
+    let sprinklesAdded = false;
+
+    function getChoice(name) {
+      return document.querySelector(`input[name="${name}"]:checked`).value;
+    }
+    function drawCake() {
+      const shape = getChoice('shape');
+      const tierCount = Number(document.querySelector('#tiers').value);
+      const frosting = getChoice('frosting');
+      const drip = getChoice('drip');
+      const selectedToppings = toppingButtons.filter(button => button.getAttribute('aria-pressed') === 'true').map(button => button.dataset.topping);
+      cake.replaceChildren();
+      for (let i = 0; i < tierCount; i += 1) {
+        const tier = document.createElement('div');
+        tier.className = `tier ${shape}`;
+        tier.style.width = `${Math.max(46, 88 - i * 19)}%`;
+        tier.style.height = `${Math.max(54, 72 - i * 5)}px`;
+        tier.style.setProperty('--frosting', frosting);
+        tier.style.setProperty('--drip', drip);
+        if (i === tierCount - 1) {
+          const icing = document.createElement('div');
+          icing.className = 'drip';
+          tier.append(icing);
+          if (selectedToppings.length) {
+            const topper = document.createElement('span');
+            topper.className = 'cake-topper';
+            topper.textContent = selectedToppings[0];
+            topper.setAttribute('aria-hidden', 'true');
+            tier.append(topper);
+          }
+        }
+        selectedToppings.slice(1).forEach((topping, index) => {
+          const decoration = document.createElement('span');
+          decoration.className = 'topping';
+          decoration.textContent = topping;
+          decoration.style.left = `${18 + ((index * 27 + i * 13) % 66)}%`;
+          decoration.style.top = `${22 + ((index * 13) % 43)}px`;
+          decoration.setAttribute('aria-hidden', 'true');
+          tier.append(decoration);
+        });
+        if (sprinklesAdded) {
+          for (let j = 0; j < 11; j += 1) {
+            const sprinkle = document.createElement('span');
+            sprinkle.className = 'sprinkle';
+            sprinkle.style.left = `${10 + ((j * 31 + i * 17) % 80)}%`;
+            sprinkle.style.top = `${27 + ((j * 19) % 40)}px`;
+            tier.append(sprinkle);
+          }
+        }
+        cake.append(tier);
+      }
+      const plate = document.createElement('div');
+      plate.className = 'plate';
+      cake.append(plate);
+      const shapeLabel = { round: 'rond', square: 'carré', heart: 'en cœur' }[shape];
+      summary.textContent = `Gâteau ${shapeLabel} · ${tierCount} ${tierCount > 1 ? 'étages' : 'étage'}`;
+    }
+
+    document.querySelectorAll('input[name="shape"], input[name="frosting"], input[name="drip"], #tiers').forEach(control => {
+      control.addEventListener('change', () => { drawCake(); status.textContent = 'Votre gâteau prend forme…'; });
+    });
+    toppingButtons.forEach(button => button.addEventListener('click', () => {
+      const pressed = button.getAttribute('aria-pressed') === 'true';
+      button.setAttribute('aria-pressed', String(!pressed));
+      drawCake();
+      status.textContent = pressed ? 'Garniture retirée.' : 'Délicieux choix !';
+    }));
+    document.querySelector('#sprinkles').addEventListener('click', () => {
+      sprinklesAdded = !sprinklesAdded;
+      drawCake();
+      status.textContent = sprinklesAdded ? 'Des paillettes pour la touche magique !' : 'Paillettes retirées.';
+    });
+    document.querySelector('#clear').addEventListener('click', () => {
+      document.querySelector('#round').checked = true;
+      document.querySelector('#tiers').value = '2';
+      document.querySelector('#pink').checked = true;
+      document.querySelector('#white').checked = true;
+      toppingButtons.forEach(button => button.setAttribute('aria-pressed', 'false'));
+      sprinklesAdded = false;
+      drawCake();
+      status.textContent = 'Tout est prêt pour une nouvelle création !';
+    });
+    drawCake();
+  </script>
+</body>
+</html>
