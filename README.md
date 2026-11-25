@@ -3,13 +3,12 @@
 Un jeu de création de gâteaux cosy et pastel, dédié à la fabrication libre.
 
 ## Jouer
-Ouvre `index.html` dans un navigateur. Aucun compte, commande ou chronomètre requis.
+Ouvrez `index.html` dans un navigateur moderne ou servez le dossier avec un petit serveur web.
 
-## Fonctionnalités
-- Choix de la forme, des parfums et du nombre de couches
-- Application de crème en faisant glisser la souris ou le doigt
-- Choix de couleurs de glaçage
-- Décorations posées, déplacées et redimensionnées librement
-- Outils de crème, glaçage, décoration et gomme
-- Annuler la dernière action et recommencer
-- Mise en page responsive pour ordinateur et mobile
+## Interactions
+- Choisir une forme, un parfum et de 1 à 4 couches
+- Choisir la crème et l'étaler à la souris ou au doigt
+- Changer le glaçage
+- Sélectionner des décorations puis cliquer sur le gâteau pour les poser
+- Faire glisser les décorations pour les déplacer et les redimensionner avec le curseur
+- Outils de crème, glaçage, gomme, annuler, recommencer et inspiration aléatoire
