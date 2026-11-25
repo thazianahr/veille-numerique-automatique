@@ -1,18 +1,15 @@
-# Pâtisserie Palette
+# Atelier Pâtisserie
 
-Jeu interactif de pâtisserie pastel avec commandes, création libre, boutique, progression et décoration.
+Un jeu de création de gâteaux cosy et pastel, dédié à la fabrication libre.
 
 ## Jouer
-
-Ouvrez `index.html` dans un navigateur ou utilisez GitHub Pages.
+Ouvre `index.html` dans un navigateur. Aucun compte, commande ou chronomètre requis.
 
 ## Fonctionnalités
-
-- Formes ronde, carrée et cœur
-- Une à trois couches
-- Saveurs, crèmes et glaçages
-- Toppings déposés sur le gâteau
-- Étaler la crème et ajouter des paillettes
-- Commandes de clientes
-- Pièces, étoiles et niveaux
-- Sauvegarde locale
+- Choix de la forme, des parfums et du nombre de couches
+- Application de crème en faisant glisser la souris ou le doigt
+- Choix de couleurs de glaçage
+- Décorations posées, déplacées et redimensionnées librement
+- Outils de crème, glaçage, décoration et gomme
+- Annuler la dernière action et recommencer
+- Mise en page responsive pour ordinateur et mobile
