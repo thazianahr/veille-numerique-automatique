@@ -1,223 +1,54 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101a2d">
-  <title>Veille numérique — Horloge &amp; minuteur</title>
-  <style>
-    :root {
-      color-scheme: dark;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0b1220;
-      color: #eef4ff;
-      font-synthesis: none;
-    }
-    * { box-sizing: border-box; }
-    body {
-      min-height: 100vh;
-      margin: 0;
-      display: grid;
-      place-items: center;
-      padding: 32px 18px;
-      background: radial-gradient(ellipse at 50% 0%, #1b3150 0%, #0b1220 62%);
-    }
-    main { width: min(100%, 960px); }
-    header { text-align: center; margin-bottom: 30px; }
-    .eyebrow { color: #8db9ff; font-size: .78rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
-    h1 { margin: 10px 0 8px; font-size: clamp(2rem, 6vw, 3.2rem); letter-spacing: -.045em; }
-    .subtitle { margin: 0; color: #aab8cf; }
-    .panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-    .panel {
-      padding: clamp(22px, 4vw, 34px);
-      border: 1px solid #293953;
-      border-radius: 22px;
-      background: rgb(17 28 46 / 88%);
-      box-shadow: 0 18px 55px rgb(0 0 0 / 22%);
-    }
-    h2 { margin: 0 0 24px; color: #c9d8ef; font-size: .9rem; letter-spacing: .12em; text-transform: uppercase; }
-    .clock-face {
-      position: relative; width: min(100%, 240px); aspect-ratio: 1; margin: 0 auto 22px;
-      border: 7px solid #293e5d; border-radius: 50%;
-      background: radial-gradient(circle, #16243a 0 5px, transparent 6px), #101b2d;
-      box-shadow: inset 0 0 30px rgb(0 0 0 / 25%), 0 0 25px rgb(77 147 255 / 8%);
-    }
-    .tick { position: absolute; left: 50%; top: 8px; width: 2px; height: 10px; background: #91a6c5; transform-origin: 50% 105px; }
-    .tick.major { width: 3px; height: 15px; background: #d7e5fb; }
-    .hand { position: absolute; left: 50%; bottom: 50%; border-radius: 9px; transform-origin: 50% 100%; }
-    .hand.hour { width: 6px; height: 59px; background: #e9f1ff; }
-    .hand.minute { width: 4px; height: 82px; background: #7fb0ff; }
-    .hand.second { width: 2px; height: 91px; background: #ff8f87; }
-    .hub { position: absolute; width: 12px; height: 12px; left: 50%; top: 50%; border-radius: 50%; background: #fff; transform: translate(-50%, -50%); }
-    .digital { text-align: center; font-variant-numeric: tabular-nums; font-size: clamp(2rem, 7vw, 2.8rem); font-weight: 650; letter-spacing: .04em; }
-    .date { margin-top: 6px; color: #9eafc9; text-align: center; text-transform: capitalize; }
-    .timer-display { padding: 30px 0 22px; text-align: center; font-size: clamp(3rem, 10vw, 4.5rem); font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: .035em; }
-    .timer-form { display: flex; justify-content: center; align-items: end; gap: 12px; margin-bottom: 20px; }
-    label { display: grid; gap: 7px; color: #aab8cf; font-size: .85rem; }
-    input {
-      width: 92px; padding: 11px 12px; border: 1px solid #3a4d69; border-radius: 10px;
-      background: #0b1423; color: #f3f7ff; font: inherit; font-variant-numeric: tabular-nums;
-    }
-    .buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
-    button, .code-link {
-      display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 0 17px;
-      border: 1px solid #405675; border-radius: 10px; background: #1a2b44; color: #f3f7ff;
-      font: inherit; font-weight: 650; text-decoration: none; cursor: pointer;
-    }
-    button.primary { border-color: #6ea5ff; background: #3978d6; }
-    button:hover, .code-link:hover { filter: brightness(1.15); }
-    button:focus-visible, input:focus-visible, .code-link:focus-visible { outline: 3px solid #9cc4ff; outline-offset: 3px; }
-    .status { min-height: 24px; margin: 17px 0 0; color: #ffb7af; text-align: center; }
-    footer { margin-top: 22px; text-align: center; }
-    .code-link { min-height: 38px; padding: 0 14px; color: #bcd4f8; font-size: .9rem; }
-    @media (max-width: 700px) { .panels { grid-template-columns: 1fr; } .clock-face { width: 210px; } .tick { transform-origin: 50% 91px; } }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
-  </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f8b8d1"><title>Patisserie Palette</title>
+<style>
+:root{--ink:#5d3c62;--pink:#ffb3cf;--cream:#fff8ed;--lav:#cbb2f3;--blue:#b9daf3;--peach:#ffd3b5;--green:#9fd9c0;--shadow:0 10px 28px #704f6930}*{box-sizing:border-box}body{margin:0;font-family:Nunito,Segoe UI,sans-serif;color:var(--ink);background:linear-gradient(145deg,#fff7fb,#f9ecff 48%,#edf8ff);min-height:100vh}.shell{max-width:1180px;margin:auto;padding:14px}header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#ffffffbb;border:1px solid #f3d5e4;border-radius:22px;box-shadow:var(--shadow);backdrop-filter:blur(8px)}.brand{font-family:Georgia,serif;font-size:21px}.brand b{color:#b85e96}.stats{display:flex;gap:8px}.pill{background:var(--cream);border:1px solid #efcfdc;border-radius:999px;padding:7px 10px;font-weight:800}.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}.nav button,.btn{border:0;border-radius:14px;padding:11px;background:#fff;color:var(--ink);font-weight:850;cursor:pointer;box-shadow:0 4px 12px #6a4a6212}.nav button.active{background:linear-gradient(135deg,#ffc0d7,#e8b9ef);color:#5c3158}.layout{display:grid;grid-template-columns:220px 1fr 260px;gap:12px}.panel{background:#ffffffcc;border:1px solid #efd4e2;border-radius:22px;padding:13px;box-shadow:var(--shadow)}.panel h3{margin:2px 0 10px;font-family:Georgia,serif}.shop-tabs{display:flex;gap:6px;margin-bottom:10px}.shop-tabs button{flex:1;border:0;border-radius:9px;padding7px;background:#f9edf4;font-size:12px;color:var(--ink);cursor:pointer}.shop-tabs button.active{background:#d9b9e8}.ingredients{display:grid;grid-template-columns:repeat(2,1fr);gap7px}.ingredient{min-height62px;border:2px solid transparent;border-radius13px;background:#fff4f8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap3px;cursor:pointer;font-size12px;font-weight800}.ingredient.selected{border-color:#c98ac8;background:#f1dff7}.ingredient.locked{filter:grayscale(.7);opacity:.55}.ingredient span{font-size26px}.stage{min-height520px;position:relative;overflow:hidden;border-radius22px;background:linear-gradient(#fff2f9 65%,#dfbfae 65%)}.stage:before{content:"";position:absolute;left:0;right:0;bottom:15%;height:12%;background:repeating-linear-gradient(90deg,#e9bdd1 0 30px,#fff0f5 30px 60px)}.window{position:absolute;left:25px;top:25px;width:130px;height150px;border:7px solid #a37fa4;border-radius70px 70px 12px12px;background:linear-gradient(135deg,#cef2ff,#fff)}.window:after{content:"🌸  🌷\A       🪴";white-space:pre;position:absolute;bottom:-5px;left:18px;font-size25px}.cake-workspace{position:absolute;left:50%;bottom:90px;width270px;height270px;transform:translateX(-50%);display:flex;align-items:center;justify-content:flex-end;flex-direction:column}.plate{width270px;height28px;border-radius50%;background:#fff;border:4px solid #b9d5ed;box-shadow:0 8px12px#8b607a40}.cake{display:flex;flex-direction:column-reverse;align-items:center;width:220px;filter:drop-shadow(0 9px7px #74506b33)}.tier{position:relative;width:var(--w);height:58px;margin-top:-2px;border-radius:14px 14px 8px8px;border:3px solid #fff9;box-shadow:inset0-10px#00000012,inset0 8px#ffffff55;transition:.25s}.tier:before{content:"";position:absolute;left:-1px;right:-1px;top:-3px;height16px;border-radius50%;background:var(--top);box-shadow:0 5px0 var(--drip)}.tier.square{border-radius:7px}.tier.heart{border-radius:45% 45% 12px12px}.decoration-layer{position:absolute;inset:0;pointer-events:none}.topping{position:absolute;font-size25px;filter:drop-shadow(0 2px2px #7f5a7666);animation:pop .28s ease-out}@keyframes pop{from{transform:scale(.2) translateY(-20px);opacity:0}}.sparkle{position:absolute;font-size16px;animation:twinkle1.3s infinite}@keyframes twinkle{50%{transform:rotate(180deg) scale(.5);opacity:.4}}.tools{display:grid;grid-template-columns:repeat(3,1fr);gap7px;margin-top10px}.tool{height52px;border:0;border-radius12px;background:#fff3f7;cursor:pointer;font-size20px}.tool.active{background:#d9c1ed;box-shadow:inset0 0 0 2px#9c72a8}.order-card{background:linear-gradient(135deg,#fff7ed,#fff);border:1px solid#efd8c7;border-radius16px;padding10px;margin-bottom10px}.customer{display:flex;align-items:center;gap8px}.avatar{font-size36px}.stars{color:#eebc50}.progress{height7px;border-radius8px;background:#eee;margin8px0;overflow:hidden}.progress i{display:block;height100%;width100%;background:linear-gradient(90deg,#ffb0c9,#b89edb)}.modal{display:none;position:fixed;z-index20;inset0;background:#55395055;place-items:center;padding18px}.modal.show{display:grid}.modal-card{width:min(520px,100%);background:#fffafc;border-radius24px;padding22px;box-shadow:0 25px80px#442e4d66;text-align:center}.modal-card h2{font-family:Georgia,serif}.reward{font-size48px}.toast{position:fixed;z-index30;left50%;bottom20px;transform:translate(-50%,100px);background:#604564;color:white;border-radius999px;padding12px20px;transition:.35s}.toast.show{transform:translate(-50%,0)}.free-badge{display:none}.hidden{display:none}@media(max-width:850px){.layout{grid-template-columns:1fr}.stage{min-height440px}.window{transform:scale(.75);transform-origin:top left}.stats .level{display:none}}
+</style>
 </head>
-<body>
-  <main>
-    <header>
-      <div class="eyebrow">Tableau de bord</div>
-      <h1>Veille numérique</h1>
-      <p class="subtitle">L’heure et votre prochain rendez-vous, en un coup d’œil.</p>
-    </header>
-    <div class="panels">
-      <section class="panel" aria-labelledby="clock-title">
-        <h2 id="clock-title">Horloge locale</h2>
-        <div class="clock-face" role="img" aria-label="Horloge analogique">
-          <div id="ticks" aria-hidden="true"></div>
-          <div class="hand hour" id="hour-hand"></div>
-          <div class="hand minute" id="minute-hand"></div>
-          <div class="hand second" id="second-hand"></div>
-          <div class="hub"></div>
-        </div>
-        <div class="digital" id="clock-time" aria-live="off">--:--:--</div>
-        <div class="date" id="clock-date"></div>
-      </section>
-      <section class="panel" aria-labelledby="timer-title">
-        <h2 id="timer-title">Minuteur</h2>
-        <div class="timer-display" id="timer-display" role="timer" aria-live="off">05:00</div>
-        <div class="timer-form" aria-label="Durée du minuteur">
-          <label for="minutes">Minutes
-            <input id="minutes" type="number" min="0" max="999" value="5" inputmode="numeric">
-          </label>
-          <label for="seconds">Secondes
-            <input id="seconds" type="number" min="0" max="59" value="0" inputmode="numeric">
-          </label>
-        </div>
-        <div class="buttons">
-          <button class="primary" id="start-button" type="button">Démarrer</button>
-          <button id="pause-button" type="button" disabled>Pause</button>
-          <button id="reset-button" type="button">Réinitialiser</button>
-        </div>
-        <p class="status" id="timer-status" role="status" aria-live="polite"></p>
-      </section>
-    </div>
-    <footer><a class="code-link" href="code.html">Voir le code de cette page →</a></footer>
-  </main>
-  <script>
-    // Repères de l'horloge analogique
-    const ticks = document.querySelector('#ticks');
-    for (let i = 0; i < 12; i += 1) {
-      const tick = document.createElement('span');
-      tick.className = `tick${i % 3 === 0 ? ' major' : ''}`;
-      tick.style.transform = `translateX(-50%) rotate(${i * 30}deg)`;
-      ticks.append(tick);
-    }
-
-    const twoDigits = (value) => String(value).padStart(2, '0');
-    function updateClock() {
-      const now = new Date();
-      const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
-      const minutes = now.getMinutes() + seconds / 60;
-      const hours = (now.getHours() % 12) + minutes / 60;
-      document.querySelector('#second-hand').style.transform = `translateX(-50%) rotate(${seconds * 6}deg)`;
-      document.querySelector('#minute-hand').style.transform = `translateX(-50%) rotate(${minutes * 6}deg)`;
-      document.querySelector('#hour-hand').style.transform = `translateX(-50%) rotate(${hours * 30}deg)`;
-      document.querySelector('#clock-time').textContent = now.toLocaleTimeString('fr-FR');
-      document.querySelector('#clock-date').textContent = new Intl.DateTimeFormat('fr-FR', {
-        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-      }).format(now);
-    }
-    updateClock();
-    setInterval(updateClock, 250);
-
-    const minutesInput = document.querySelector('#minutes');
-    const secondsInput = document.querySelector('#seconds');
-    const display = document.querySelector('#timer-display');
-    const status = document.querySelector('#timer-status');
-    const startButton = document.querySelector('#start-button');
-    const pauseButton = document.querySelector('#pause-button');
-    let remaining = 300;
-    let deadline = 0;
-    let intervalId = null;
-
-    function formatTime(totalSeconds) {
-      const mins = Math.floor(totalSeconds / 60);
-      const secs = totalSeconds % 60;
-      return `${twoDigits(mins)}:${twoDigits(secs)}`;
-    }
-    function selectedDuration() {
-      const mins = Math.max(0, Math.min(999, Number.parseInt(minutesInput.value, 10) || 0));
-      const secs = Math.max(0, Math.min(59, Number.parseInt(secondsInput.value, 10) || 0));
-      minutesInput.value = String(mins);
-      secondsInput.value = String(secs);
-      return mins * 60 + secs;
-    }
-    function renderTimer() { display.textContent = formatTime(remaining); }
-    function stopTimer() {
-      window.clearInterval(intervalId);
-      intervalId = null;
-    }
-    function tick() {
-      remaining = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
-      renderTimer();
-      if (remaining === 0) {
-        stopTimer();
-        startButton.disabled = false;
-        pauseButton.disabled = true;
-        status.textContent = 'Temps écoulé !';
-      }
-    }
-    startButton.addEventListener('click', () => {
-      if (intervalId) return;
-      if (remaining <= 0) remaining = selectedDuration();
-      if (remaining <= 0) {
-        status.textContent = 'Choisissez une durée supérieure à zéro.';
-        return;
-      }
-      status.textContent = '';
-      deadline = Date.now() + remaining * 1000;
-      startButton.disabled = true;
-      pauseButton.disabled = false;
-      tick();
-      intervalId = window.setInterval(tick, 200);
-    });
-    pauseButton.addEventListener('click', () => {
-      if (!intervalId) return;
-      tick();
-      stopTimer();
-      startButton.disabled = false;
-      pauseButton.disabled = true;
-      status.textContent = 'Minuteur en pause.';
-    });
-    document.querySelector('#reset-button').addEventListener('click', () => {
-      stopTimer();
-      remaining = selectedDuration();
-      renderTimer();
-      startButton.disabled = false;
-      pauseButton.disabled = true;
-      status.textContent = '';
-    });
-    for (const input of [minutesInput, secondsInput]) {
-      input.addEventListener('input', () => {
-        if (intervalId) return;
-        remaining = selectedDuration();
-        renderTimer();
-        status.textContent = '';
-      });
-    }
-    renderTimer();
-  </script>
-</body>
-</html>
+<body><div class="shell">
+<header><div class="brand">🌸 <b>Pâtisserie</b> Palette</div><div class="stats"><div class="pill level">Niv. <span id="level">1</span></div><div class="pill">⭐ <span id="stars">0</span></div><div class="pill">🪙 <span id="money">80</span></div></div></header>
+<nav class="nav"><button class="active" data-view="game">🎂 Jouer</button><button data-view="free">✨ Création libre</button><button data-view="shop">🛍️ Boutique</button><button data-view="decor">🏡 Ma pâtisserie</button></nav>
+<div class="layout">
+<aside class="panel"><h3 id="sideTitle">Ingrédients</h3><div class="shop-tabs" id="tabs"><button class="active" data-tab="flavor">Saveurs</button><button data-tab="cream">Crème</button><button data-tab="shape">Forme</button></div><div class="ingredients" id="ingredients"></div></aside>
+<section class="stage"><div class="window"></div><div class="cake-workspace"><div class="cake" id="cake"></div><div class="plate"></div></div></section>
+<aside class="panel"><h3 id="rightTitle">Commande du jour</h3><div id="orderArea"></div><div class="progress"><i id="progress"></i></div><div class="tools"><button class="tool active" data-tool="place" title="Déposer">🧁</button><button class="tool" data-tool="cream" title="Étaler la crème">🍦</button><button class="tool" data-tool="sprinkle" title="Paillettes">✨</button><button class="tool" data-tool="move" title="Déplacer">↔️</button><button class="tool" data-tool="remove" title="Retirer">🧽</button><button class="tool" id="resetTool" title="Tout effacer">🔄</button></div><button class="btn" id="serve" style="width:100%;margin-top10px;background:#ffc9dd">Servir la commande</button></section>
+</div></div><div class="modal" id="modal"><div class="modal-card"><div class="reward" id="rewardIcon">⭐</div><h2 id="rewardTitle">Magnifique !</h2><p id="rewardText"></p><button class="btn" id="closeModal">Continuer</button></div></div><div class="toast" id="toast"></div>
+<script>
+const $=(s,c=document)=>c.querySelector(s),$$=(s,c=document)=>[...c.querySelectorAll(s)];
+const state=JSON.parse(localStorage.patisseriePalette||'null')||{money:80,stars:0,level:1,flavor:'vanille',cream:'vanille',shape:'round',tiers:2,drip:'#ffc9df',decor:{},bought:['vanille','chocolat','fraise','vanillecream','round'],tierCount:2};
+const save=()=>localStorage.patisseriePalette=JSON.stringify(state);
+const flavorData=[['vanille','Vanille','🍦',0],['chocolat','Chocolat','🍫',0],['fraise','Fraise','🍓',0],['citron','Citron','🍋',35],['redvelvet','Red Velvet','🌹',55],['lavande','Lavande','🪻',75]];
+const creamData=[['vanillecream','Crème vanille','🤍',0],['chocolatecream','Ganache','🍫',20],['pinkcream','Crème rose','🌸',25],['bluecream','Crème bleue','🧊',35]];
+const shapeData=[['round','Ronde','◯',0],['square','Carrée','▢',15],['heart','Cœur','♡',25]];
+let activeTool='place',activeTab='flavor',freeMode=false,clientIndex=0,sparkles=false;
+const orders=[{name:'Clara','emoji:'👧🏻',flavor:'fraise',shape:'round',cream:'pinkcream',tiers:2,request:'Une douceur rose à 2 étages',emojiCake:'🍓'}, {name:'Monsieur Theo','emoji:'🧑🏻',flavor:'chocolat',shape:'square',cream:'chocolatecream',tiers:3,request:'Un grand chocolat élégant',emojiCake:'🍫'}, {name:'Élise','emoji:'👩🏼',flavor:'citron',shape:'heart',cream:'vanillecream',tiers:2,request:'Un cœur citronné avec fleurs',emojiCake:'🌸'}];
+function toast(text){const t=$('#toast');t.textContent=text;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+function renderStats(){ $('#money').textContent=state.money;$('#stars').textContent=state.stars;$('#level').textContent=state.level }
+function selectedData(){return $('#ingredients .selected')?.dataset.key}
+function renderIngredients(){const box=$('#ingredients');box.innerHTML='';let arr=activeTab==='flavor'?flavorData:activeTab==='cream'?creamData:shapeData;arr.forEach(([key,name,icon,cost])=>{const owned=state.bought.includes(key)||cost===0;const el=document.createElement('button');el.className='ingredient'+(state[activeTab==='flavor'?'flavor':activeTab==='cream'?'cream':'shape']==key?' selected':'')+(owned?'':' locked');el.dataset.key=key;el.innerHTML=`<span>${icon}</span>${name}${owned?'':' · '+cost+'🪙'}`;el.onclick=()=>{if(!owned){if(state.money>=cost){state.money-=cost;state.bought.push(key)}else{toast('Pas assez de pièces !');return}}if(activeTab==='flavor')state.flavor=key;if(activeTab==='cream')state.cream=key;if(activeTab==='shape')state.shape=key;save();renderIngredients();drawCake();toast(owned?name+' sélectionné':'Débloqué : '+name)};box.append(el)})}
+function drawCake(){const cake=$('#cake');cake.innerHTML='';for(let i=0;i<state.tierCount;i++){const tier=document.createElement('div');tier.className='tier '+state.shape;tier.style.setProperty('--w',(220-i*30)+'px');const colors={vanille:'#f6deb1',chocolat:'#9b6547',fraise:'#e98da6',citron:'#f3df78',redvelvet:'#b84d61',lavande:'#baa2da'};tier.style.background=colors[state.flavor]||'#f3d1aa';const cream={vanillecream:'#fff4df',chocolatecream:'#7a4b3c',pinkcream:'#ffc2d8',bluecream:'#bedff1'};tier.style.setProperty('--top',cream[state.cream]||'#fff4df');tier.style.setProperty('--drip',state.drip||'#ffd6e5');tier.onclick=e=>handleTierClick(e,tier,i);const dec=document.createElement('div');dec.className='decoration-layer';dec.innerHTML=(state.decor[i]||'').replace(/aria-/g,'aria-');tier.append(dec);cake.append(tier)} }
+function handleTierClick(e,tier,index){if(activeTool==='place')return;if(activeTool==='remove'){[...tier.querySelectorAll('.topping,.sparkle')].at(-1)?.remove();return}if(activeTool==='sprinkle')addSparkle(tier,e);if(activeTool==='cream'){tier.animate([{filter:'brightness(1.2)'},{filter:'brightness(1)'}],{duration:400});toast('Crème étalée avec douceur')}
+}
+function addSparkle(tier,e){const r=tier.getBoundingClientRect();const s=document.createElement('span');s.className='sparkle';s.textContent='✦';s.style.left=Math.max(5,Math.min(90,(e.clientX-r.left)/r.width*100))+'%';s.style.top=Math.max(5,Math.min(75,(e.clientY-r.top)/r.height*100))+'%';tier.querySelector('.decoration-layer').append(s)}
+function setTool(tool){activeTool=tool;$$('.tool').forEach(b=>b.classList.toggle('active',b.dataset.tool===tool));}
+$$('.tool[data-tool]').forEach(b=>b.onclick=()=>setTool(b.dataset.tool));$('#resetTool').onclick=()=>{state.decor={};drawCake();toast('Gâteau remis à neuf')};
+$$('#tabs button').forEach(b=>b.onclick=()=>{$$('#tabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');activeTab=b.dataset.tab;if(activeTab==='shape')$('#sideTitle').textContent='Formes';else if(activeTab==='cream')$('#sideTitle').textContent='Crèmes';else $('#sideTitle').textContent='Ingrédients';renderIngredients()});
+$$('.nav button').forEach(b=>b.onclick=()=>{$$('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');const v=b.dataset.view;freeMode=v==='free';if(v==='shop')openShop();else if(v==='decor')openDecor();else {$('#sideTitle').textContent=freeMode?'Atelier libre':'Ingrédients';$('#rightTitle').textContent=freeMode?'Création libre':'Commande du jour';renderOrder();drawCake()}});
+function renderOrder(){if(freeMode){$('#orderArea').innerHTML='<div class="order-card"><div class="customer"><span class="avatar">✨</span><div><b>Création libre</b><br><small>Laissez votre imagination briller</small></div></div></div>';return}const o=orders[clientIndex%orders.length];$('#orderArea').innerHTML=`<div class="order-card"><div class="customer"><span class="avatar">${o.emoji}</span><div><b>${o.name}</b><br><small>${o.request}</small></div></div><div class="stars">${o.emojiCake} · ${o.flavor} · ${o.cream.replace(/cream/, '')}</div></div>`}
+function openShop(){activeTab='flavor';$('#tabs button').forEach((b,i)=>b.classList.toggle('active',i===0));$('#sideTitle').textContent='Boutique';$('#rightTitle').textContent='Nouveautés';$('#orderArea').innerHTML='<div class="order-card"><b>Recettes rares</b><br><small>Gagnez des étoiles pour agrandir votre collection.</small></div>';renderIngredients()}
+function openDecor(){$('#rightTitle').textContent='Décoration';$('#orderArea').innerHTML='<div class="order-card"><b>Atelier de pâtisserie</b><br><small>Flores, comptoir et vitrines arrivent bientôt dans votre collection.</small></div><button class="btn" id="addFlower" style="width:100%">🌸 Ajouter des fleurs · 15🪙</button>';setTimeout(()=>$('#addFlower')?.addEventListener('click',()=>{if(state.money>=15){state.money-=15;save();renderStats();toast('Fleurs ajoutées à votre boutique !')}else toast('Pas assez de pièces')}),0)}
+$('#serve').onclick=()=>{let stars=1,money=15;if(!freeMode){const o=orders[clientIndex%orders.length];let score=0;if(state.flavor===o.flavor)score+=2;if(state.shape===o.shape)score+=2;if(state.cream===o.cream)score+=2;if(state.tierCount===o.tiers)score+=1;stars=score>=5?3:score>=3?2:1;money=10+stars*10}else stars=2,money=18;state.money+=money;state.stars+=stars;state.level=1+Math.floor(state.stars/8);save();renderStats();showReward(stars,money);if(!freeMode)clientIndex=(clientIndex+1)%orders.length;renderOrder();drawCake()};
+function showReward(stars,money){$('#rewardIcon').textContent=['⭐','⭐⭐','⭐⭐⭐'][stars-1];$('#rewardTitle').textContent=stars===3?'Commande parfaite !':stars===2?'Très jolie pâtisserie !':'Belle pâtisserie !';$('#rewardText').textHTML='';$('#rewardText').textContent=`Vous gagnez ${money} pièces et ${stars} étoile${stars>1?'s':''}.`;$('#modal').classList.add('show')}
+$('#closeModal').onclick=()=>$('#modal').classList.remove('show');
+// Glissement interactif : déposer un topping sur le gâteau depuis la palette contextuelle
+const toppingPalette=['🍓','🍒','🫐','🍫','🌸','🍬','💎','🕯️','🧁','🍋'];const palette=document.createElement('div');palette.style.cssText='position:absolute;left:12px;bottom:18px;display:flex;flex-wrap:wrap;gap5px;width180px;z-index8';toppingPalette.forEach(t=>{const b=document.createElement('button');b.textContent=t;b.style.cssText='width38px;height38px;border:0;border-radius50%;background:#fff;font-size20px;cursor:pointer';b.onclick=()=>placeTopping(t);palette.append(b)});$('.stage').append(palette);
+function placeTopping(t){if(activeTool==='remove')return;const cakeRect=$('.cake').getBoundingClientRect();const target=$$('.tier').at(-1)||$('#cake');const el=document.createElement('span');el.className='topping';el.textContent=t;el.style.left=(18+Math.random()*64)+'%';el.style.top=(10+Math.random()*48)+'px';target.querySelector('.decoration-layer')?.append(el);toast(t+' ajouté');}
+$('#ingredients').addEventListener('click',()=>{});
+// niveaux d'étage et raccourcis pour la version actuelle
+window.addEventListener('keydown',e=>{if(e.key==='1')state.tierCount=1;if(e.key==='2')state.tierCount=2;if(e.key==='3')state.tierCount=3;if(['1','2','3'].includes(e.key)){save();drawCake()}});
+// ajouter une commande évolutive et une touche 1/2/3 pour les étages
+const tiersControl=document.createElement('div');tiersControl.className='ingredients';tiersControl.style.marginTop='8px';for(let n=1;n<=3;n++){const b=document.createElement('button');b.className='ingredient';b.innerHTML=`<span>${n}</span>${n} étage${n>1?'s':''}`;b.onclick=()=>{state.tierCount=n;save();drawCake();toast(n+' étage'+(n>1?'s':''))};tiersControl.append(b)}$('#sideTitle').after(tiersControl);
+renderStats();renderIngredients();renderOrder();drawCake();save();
+</script></body></html>
