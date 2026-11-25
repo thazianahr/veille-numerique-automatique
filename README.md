@@ -10,11 +10,9 @@ Ouvrez `index.html` dans un navigateur ou utilisez GitHub Pages.
 
 - Formes ronde, carrée et cœur
 - Une à trois couches
-- Saveurs et crèmes
+- Saveurs, crèmes et glaçages
 - Toppings déposés sur le gâteau
-- Crème, paillettes et outils d'édition
+- Étaler la crème et ajouter des paillettes
 - Commandes de clientes
 - Pièces, étoiles et niveaux
 - Sauvegarde locale
-- Boutique d'ingrédients
-- Création libre
